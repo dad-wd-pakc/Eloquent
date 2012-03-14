@@ -467,7 +467,7 @@ function initAllTheseThings() {
 	var mapDirections = function() {
 		var roads = {};
 		function makeRoad(from, to, length) {
-			document.write(from + " " + to + " " + length);
+			//document.write(from + " " + to + " " + length);
 			
 			function addRoad(from, to) {
 				if (!(from in roads)) {
@@ -496,8 +496,147 @@ function initAllTheseThings() {
 		makeRoads("Puamua", "Mt Ootua", 13, "Point Teohotepapapa", 14);
 		
 		//document.write(roads["Point Kiukiu"]);
-		alert(roads["Airport"]);
+		//alert(roads["Airport"]);
+		
+		function roadsFrom(place) {
+			var found = roads[place];
+			
+			if(found == undefined) {
+				//document.write("Sorry. We did not find a place called '" + place + "'.");
+				throw new Error("Sorry. We did not find a place called '" + place + "'.");
+			} else {
+				//document.write(found);
+				return found;
+			}
+		}
+		
+		//roadsFrom("Cemetery");
+		
+		function member(array, value) {
+			var found = false;
+			forEach(array, function(element) {
+				if (element === value) {
+					found = true;
+				}
+			});
+			
+			return found;
+		}
+		
+		//document.write(member([6, 7, "Bordeaux"], 7));
 	};
 	
 	mapDirections();
-}
+	
+	/*
+	var speak = function(line){
+		document.write("<p>The " + this.adjective + " rabbit says '" + line + ".'</p>");
+	};
+	
+	var corporateRabbit = {
+		adjective: "corporate",
+		speak: speak
+	};
+	
+	var addictRabbit = {
+		adjective: "Cherry Coke craving",
+		speak: speak
+	};
+	
+	speak.apply(corporateRabbit, ["I love the SPAR meal deal!"]);
+	speak.call(addictRabbit, "Cherry Coke! Cherry Coke! Cherry Coke! Cherry Coke!");
+	*/
+	
+	var Rabbit = function(adjective){
+		this.adjective = adjective;
+		this.speak = function(line){
+			document.write("<p>The " + this.adjective + " rabbit says '" + line + ".'</p>");
+		}
+	};
+	
+	var inconsiderateRabbit = new Rabbit("inconsiderate");
+	inconsiderateRabbit.speak("Someone's sitting there, luv");
+	
+	var distinguishedRabbit = new Rabbit("distinguished");
+	
+	var simpleObject = {};
+	console.log(simpleObject.constructor);
+	console.log(simpleObject.toString);
+	
+	//document.write(inconsiderateRabbit.toString == simpleObject.toString);
+	
+	Rabbit.prototype.dance = function() {
+		document.write("The " + this.adjective + " rabbit is a maniac on the dancefloor.");
+	};
+	
+	distinguishedRabbit.dance();
+	
+	/*
+	Object.prototype.properties = function() {
+		var result = [];
+		
+		for(var property in this) {
+			if(this.hasOwnProperty(property)) {
+				result.push(property);
+			}
+		}
+		
+		return result;
+	};
+	
+	var test = {"Evian": true, "Volvic": true};
+	document.write("<p>" + test.properties() + "</p>");
+	*/
+	
+	var forEachIn = function(object, action) {
+		for(var property in object){
+			if(Object.prototype.hasOwnProperty.call(object, property)){
+				action(property, object[property]);
+			}
+		}
+	};
+	
+	var monkeyBearCat = {head: "monkey", body: "bear", tail: "cat", hasOwnProperty: "responsive"};
+	
+	forEachIn(monkeyBearCat, function(name, value) {
+		//document.write("<p>The " + name + " of a " + value + ".</p>");
+		document.write("<p>Property " + name + " = " + value + "</p>");
+	});
+	
+	var object = {foo: "bar"};
+	
+	document.write(Object.prototype.hasOwnProperty.call(object, "foo") && Object.prototype.propertyIsEnumerable.call(object, "foo"));
+	
+	var Dictionary = function(startValues){
+		this.values = startValues || {};
+	};
+	
+	Dictionary.prototype.store = function(name, value) {
+		this.values[name] = value;
+	};
+	
+	Dictionary.prototype.lookup = function(name) {
+		return this.values[name];
+	};
+	
+	Dictionary.prototype.contains = function(name) {
+		return Object.prototype.hasOwnProperty.call(this.values, name) && Object.prototype.propertyIsEnumerable.call(this.values, name);
+	};
+	
+	Dictionary.prototype.each = function(action) {
+		forEachIn(this.values, action);
+	}
+	
+	var colours = new Dictionary({
+		Grover: "blue",
+		Elmo: "red",
+		Bert: "yellow"
+	});
+	
+	document.write("<p>Does colours contain Grover? " + colours.contains("Grover") + "</p>");
+	document.write("<p>Does colours contain constructor? " + colours.contains("constructor") + "</p>");
+	
+	colours.each(function(name, colour) {
+		document.write("<p>" + name + " is " + colour + "</p>");
+	});
+};
