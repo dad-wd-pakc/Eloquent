@@ -2,7 +2,11 @@ window.onload = function() {
     initAllTheseThings();
 };
 
-function initAllTheseThings() {    
+function initAllTheseThings() {
+	var blahBlahBlah = (function(){
+		document.write("<p>Blah Blah Blah is happening...</p>");
+	})();
+	    
     var add = function(a, b) {
         return a + b;
     };
